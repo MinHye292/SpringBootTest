@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -30,6 +31,18 @@ public class BookController {
             if (book.getId().equals(id)) {
                 book.setTitle(updateBook.getTitle());
                 return ResponseEntity.ok(book);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+        for(Iterator<Book> iterator = books.iterator(); iterator.hasNext();) {
+            Book book = iterator.next();
+            if(book.getId().equals(id)) {
+                iterator.remove();
+                return ResponseEntity.noContent().build();
             }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
