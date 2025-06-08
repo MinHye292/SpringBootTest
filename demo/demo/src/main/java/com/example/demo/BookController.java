@@ -23,4 +23,15 @@ public class BookController {
         books.add(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(book);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Book> updateBook(@PathVariable long id, @RequestBody Book updateBook) {
+        for (Book book : books) {
+            if (book.getId().equals(id)) {
+                book.setTitle(updateBook.getTitle());
+                return ResponseEntity.ok(book);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 }
